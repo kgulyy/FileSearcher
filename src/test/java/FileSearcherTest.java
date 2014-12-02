@@ -17,7 +17,7 @@ public class FileSearcherTest {
     private Searcher fileSearcher;
 
     /**
-     * Search for not-existent files or directories
+     * Search for existent files or directories
      * by part of file name
      */
     @Test
@@ -35,9 +35,9 @@ public class FileSearcherTest {
      */
     @Test
     public void test_1() {
-        fileSearcher = new FileSearcher("abrakadabra");
+        fileSearcher = new FileSearcher("abrakadabra1");
         //TODO Don't use List without they parameters!
-        ArrayList result = fileSearcher.searchFile();
+        ArrayList<FileInfo> result = fileSearcher.searchFile();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -50,7 +50,7 @@ public class FileSearcherTest {
     @Test
     public void test_2() {
         fileSearcher = new FileSearcher("abra.*kadabra");
-        ArrayList result = fileSearcher.searchFileByRegular();
+        ArrayList<FileInfo> result = fileSearcher.searchFileByRegular();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -63,7 +63,7 @@ public class FileSearcherTest {
     @Test
     public void test_3() {
         fileSearcher = new FileSearcher("*r?kad?bra");
-        ArrayList result = fileSearcher.searchFileByPattern();
+        ArrayList<FileInfo> result = fileSearcher.searchFileByPattern();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -212,7 +212,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_11() {
-        FileSearcher fileSearcher = new FileSearcher("");
+        fileSearcher = new FileSearcher("");
         int result1 = fileSearcher.searchFile().size();
         Assert.assertEquals("Search by part for null file name mistake", getCountFiles(), result1);
 

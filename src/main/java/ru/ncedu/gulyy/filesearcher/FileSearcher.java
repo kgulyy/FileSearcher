@@ -99,7 +99,16 @@ public class FileSearcher implements Searcher {
                 return matcher.matches();
             }
         });
-        addGatherFiles(correctFiles);
+
+        Collection<FileInfo> gatheredInfo = Collections2.transform(Arrays.asList(correctFiles), new Function<File, FileInfo>() {
+            @Override
+            public FileInfo apply(File file) {
+                return gatherFileInfo(file);
+            }
+        });
+
+        filesInfo.addAll(gatheredInfo);
+        //addGatherFiles(correctFiles);
 
 
         File[] files = currentDirectory.listFiles();
@@ -121,7 +130,16 @@ public class FileSearcher implements Searcher {
                 return matcher.matches();
             }
         });
-        addGatherFiles(correctFiles);
+
+        Collection<FileInfo> gatheredInfo = Collections2.transform(Arrays.asList(correctFiles), new Function<File, FileInfo>() {
+            @Override
+            public FileInfo apply(File file) {
+                return gatherFileInfo(file);
+            }
+        });
+
+        filesInfo.addAll(gatheredInfo);
+        //addGatherFiles(correctFiles);
 
         File[] files = currentDirectory.listFiles();
         for (File file : files) {
