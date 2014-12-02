@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
+import ru.ncedu.gulyy.filesearcher.FileInfo;
 import ru.ncedu.gulyy.filesearcher.FileSearcher;
+import ru.ncedu.gulyy.filesearcher.Searcher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,13 +13,30 @@ import java.util.ArrayList;
 public class FileSearcherTest {
     private int filesCount; // number of searching files
 
+    //It is better to use interface and provide concrete realization in @Before method
+    private Searcher fileSearcher;
+
+    /**
+     * Search for not-existent files or directories
+     * by part of file name
+     */
+    @Test
+    public void test_0() {
+        fileSearcher = new FileSearcher("abrakadabra0");
+        ArrayList<FileInfo> result = fileSearcher.searchFile();
+        if (result.size() == 0) {
+            Assert.fail();
+        }
+    }
+
     /**
      * Search for not-existent files or directories
      * by part of file name
      */
     @Test
     public void test_1() {
-        FileSearcher fileSearcher = new FileSearcher("abrakadabra");
+        fileSearcher = new FileSearcher("abrakadabra");
+        //TODO Don't use List without they parameters!
         ArrayList result = fileSearcher.searchFile();
         if (result.size() != 0) {
             Assert.fail();
@@ -30,7 +49,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_2() {
-        FileSearcher fileSearcher = new FileSearcher("abra.*kadabra");
+        fileSearcher = new FileSearcher("abra.*kadabra");
         ArrayList result = fileSearcher.searchFileByRegular();
         if (result.size() != 0) {
             Assert.fail();
@@ -43,7 +62,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_3() {
-        FileSearcher fileSearcher = new FileSearcher("*r?kad?bra");
+        fileSearcher = new FileSearcher("*r?kad?bra");
         ArrayList result = fileSearcher.searchFileByPattern();
         if (result.size() != 0) {
             Assert.fail();
@@ -56,7 +75,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_4() {
-        FileSearcher fileSearcher = new FileSearcher("");
+        fileSearcher = new FileSearcher("");
         int result = fileSearcher.searchFile().size();
 
         Assert.assertEquals("Count of searching files mistake", getCountFiles(), result);
@@ -68,7 +87,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_5() {
-        FileSearcher fileSearcher = new FileSearcher(".*");
+        fileSearcher = new FileSearcher(".*");
         int result = fileSearcher.searchFileByRegular().size();
 
         Assert.assertEquals("Count of searching files mistake",getCountFiles(), result);
@@ -80,7 +99,7 @@ public class FileSearcherTest {
      */
     @Test
     public void test_6() {
-        FileSearcher fileSearcher = new FileSearcher("*");
+        fileSearcher = new FileSearcher("*");
         int result = fileSearcher.searchFileByPattern().size();
 
         Assert.assertEquals("Count of searching files mistake", getCountFiles(), result);
