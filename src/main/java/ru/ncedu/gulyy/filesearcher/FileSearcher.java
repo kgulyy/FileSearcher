@@ -1,10 +1,14 @@
 package ru.ncedu.gulyy.filesearcher;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import ru.ncedu.gulyy.common.Folder;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +70,17 @@ public class FileSearcher implements Searcher {
                 return name.toLowerCase().contains(fileName);
             }
         });
-        addGatherFiles(correctFiles);
+
+        //Use functional approach
+        Collection<FileInfo> gatheredInfo = Collections2.transform(Arrays.asList(correctFiles), new Function<File, FileInfo>() {
+            @Override
+            public FileInfo apply(File file) {
+                return gatherFileInfo(file);
+            }
+        });
+
+        filesInfo.addAll(gatheredInfo);
+        //addGatherFiles(correctFiles);
 
         File[] files = currentDirectory.listFiles();
         for (File file : files) {
