@@ -26,7 +26,7 @@ public class FileInfo {
     }
 
     public static String printTableHeading() {
-        return String.format("%-7s%-25s%-100s", "isFile", "Name", "Path");
+        return String.format("%-7s%-50s%-100s", "isFile", "Name", "Path");
     }
 
     @Override
@@ -39,6 +39,6 @@ public class FileInfo {
                 ", lastModifiedDate='" + dateToString(lastModifiedDate) + '\'' +
                 '}';
         */
-        return String.format("%-7s%-25s%-100s", isFile, fileName, filePath);
+        return String.format("%-7s%-50s%-100s", isFile, fileName, filePath);
     }
 }

@@ -1,7 +1,6 @@
 package ru.ncedu.gulyy.app;
 
-import ru.ncedu.gulyy.filesearcher.FileInfo;
-import ru.ncedu.gulyy.filesearcher.FileSearcher;
+import ru.ncedu.gulyy.filesearcher.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,24 +47,24 @@ public class FileSearcherApp {
         } else if (menuPoint.equals("1")) {
             System.out.println("Enter part of the file name: ");
             String partFileName = br.readLine();
-            FileSearcher fileSearcher = new FileSearcher(partFileName);
-            printFileInfo(fileSearcher.searchFile());
+            FilesSearcher searcher = new SimpleFilesSearcher(partFileName);
+            printFileInfo(searcher.searchFiles());
 
         } else if (menuPoint.equals("2")) {
             System.out.print("Enter regular expression: ");
-            String regularFileName = br.readLine();
-            FileSearcher fileSearcherByRegular = new FileSearcher(regularFileName);
+            String fileName = br.readLine();
+            FilesSearcher searcher = new RegularFilesSearcher(fileName);
             try {
-                printFileInfo(fileSearcherByRegular.searchFileByRegular());
+                printFileInfo(searcher.searchFiles());
             } catch (Exception e) {
                 System.out.println("Error! Incorrect regular expression.");
             }
 
         } else if (menuPoint.equals("3")) {
             System.out.print("Enter search pattern: ");
-            String patternFileName = br.readLine();
-            FileSearcher fileSearcherByPattern = new FileSearcher(patternFileName);
-            printFileInfo(fileSearcherByPattern.searchFileByPattern());
+            String fileName = br.readLine();
+            FilesSearcher searcher = new PatternFilesSearcher(fileName);
+            printFileInfo(searcher.searchFiles());
 
         } else {
             System.out.println("Error! Incorrect input.");
@@ -80,7 +79,7 @@ public class FileSearcherApp {
             System.out.print("Search Results: ");
             System.out.println(files.size());
             System.out.println(FileInfo.printTableHeading());
-            System.out.println("-------------------------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------------------------");
             for (FileInfo fi : files) {
                 System.out.println(fi);
             }
@@ -88,7 +87,7 @@ public class FileSearcherApp {
     }
 
     private static void waitClick(BufferedReader br) throws IOException {
-        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------");
         System.out.print("Enter any character to continue: ");
         br.readLine();
         System.out.println();

@@ -1,8 +1,7 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import ru.ncedu.gulyy.filesearcher.FileInfo;
-import ru.ncedu.gulyy.filesearcher.FileSearcher;
-import ru.ncedu.gulyy.filesearcher.Searcher;
+import ru.ncedu.gulyy.filesearcher.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +13,12 @@ public class FileSearcherTest {
     private int filesCount; // number of searching files
 
     //It is better to use interface and provide concrete realization in @Before method
-    private Searcher fileSearcher;
+    private FilesSearcher searcher;
+
+    @After
+    public void after() {
+        searcher = null;
+    }
 
     /**
      * Search for existent files or directories
@@ -22,8 +26,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_0() {
-        fileSearcher = new FileSearcher("abrakadabra0");
-        ArrayList<FileInfo> result = fileSearcher.searchFile();
+        searcher = new SimpleFilesSearcher("abrakadabra0");
+        ArrayList<FileInfo> result = searcher.searchFiles();
         if (result.size() == 0) {
             Assert.fail();
         }
@@ -35,9 +39,9 @@ public class FileSearcherTest {
      */
     @Test
     public void test_1() {
-        fileSearcher = new FileSearcher("abrakadabra1");
+        searcher = new SimpleFilesSearcher("abrakadabra1");
         //TODO Don't use List without they parameters!
-        ArrayList<FileInfo> result = fileSearcher.searchFile();
+        ArrayList<FileInfo> result = searcher.searchFiles();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -49,8 +53,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_2() {
-        fileSearcher = new FileSearcher("abra.*kadabra");
-        ArrayList<FileInfo> result = fileSearcher.searchFileByRegular();
+        searcher = new RegularFilesSearcher("abra.*kadabra");
+        ArrayList<FileInfo> result = searcher.searchFiles();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -62,8 +66,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_3() {
-        fileSearcher = new FileSearcher("*r?kad?bra");
-        ArrayList<FileInfo> result = fileSearcher.searchFileByPattern();
+        searcher = new PatternFilesSearcher("*r?kad?bra");
+        ArrayList<FileInfo> result = searcher.searchFiles();
         if (result.size() != 0) {
             Assert.fail();
         }
@@ -75,8 +79,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_4() {
-        fileSearcher = new FileSearcher("");
-        int result = fileSearcher.searchFile().size();
+        searcher = new SimpleFilesSearcher("");
+        int result = searcher.searchFiles().size();
 
         Assert.assertEquals("Count of searching files mistake", getCountFiles(), result);
     }
@@ -87,8 +91,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_5() {
-        fileSearcher = new FileSearcher(".*");
-        int result = fileSearcher.searchFileByRegular().size();
+        searcher = new RegularFilesSearcher(".*");
+        int result = searcher.searchFiles().size();
 
         Assert.assertEquals("Count of searching files mistake",getCountFiles(), result);
     }
@@ -99,8 +103,8 @@ public class FileSearcherTest {
      */
     @Test
     public void test_6() {
-        fileSearcher = new FileSearcher("*");
-        int result = fileSearcher.searchFileByPattern().size();
+        searcher = new PatternFilesSearcher("*");
+        int result = searcher.searchFiles().size();
 
         Assert.assertEquals("Count of searching files mistake", getCountFiles(), result);
     }
@@ -136,14 +140,14 @@ public class FileSearcherTest {
     @Test
     public void test_7() {
 
-        FileSearcher fileSearcher = new FileSearcher("index");
-        int result1 = fileSearcher.searchFile().size();
+        FilesSearcher searcher1 = new SimpleFilesSearcher("index");
+        int result1 = searcher1.searchFiles().size();
 
-        fileSearcher.setFileName("index.*");
-        int result2 = fileSearcher.searchFileByRegular().size();
+        FilesSearcher searcher2 = new RegularFilesSearcher("index.*");
+        int result2 = searcher2.searchFiles().size();
 
-        fileSearcher.setFileName("index*");
-        int result3 = fileSearcher.searchFileByPattern().size();
+        FilesSearcher searcher3 = new PatternFilesSearcher("index*");
+        int result3 = searcher3.searchFiles().size();
 
         Assert.assertEquals("Search for \"index\" mistake 1", result1, result2);
         Assert.assertEquals("Search for \"index\" mistake 2", result1, result3);
@@ -155,14 +159,14 @@ public class FileSearcherTest {
      */
     @Test
     public void test_8() {
-        FileSearcher fileSearcher = new FileSearcher(".html");
-        int result1 = fileSearcher.searchFile().size();
+        FilesSearcher searcher1 = new SimpleFilesSearcher(".html");
+        int result1 = searcher1.searchFiles().size();
 
-        fileSearcher.setFileName(".*\\.html");
-        int result2 = fileSearcher.searchFileByRegular().size();
+        FilesSearcher searcher2 = new RegularFilesSearcher(".*\\.html");
+        int result2 = searcher2.searchFiles().size();
 
-        fileSearcher.setFileName("*.html");
-        int result3 = fileSearcher.searchFileByPattern().size();
+        FilesSearcher searcher3 = new PatternFilesSearcher("*.html");
+        int result3 = searcher3.searchFiles().size();
 
         Assert.assertEquals("Search for html documents files mistake 1", result1, result2);
         Assert.assertEquals("Search for html documents files mistake 2", result1, result3);
@@ -174,14 +178,14 @@ public class FileSearcherTest {
      */
     @Test
     public void test_9() {
-        FileSearcher fileSearcher = new FileSearcher("index.js");
-        int result1 = fileSearcher.searchFile().size();
+        FilesSearcher searcher1 = new SimpleFilesSearcher("index.js");
+        int result1 = searcher1.searchFiles().size();
 
-        fileSearcher.setFileName("index.js");
-        int result2 = fileSearcher.searchFileByRegular().size();
+        FilesSearcher searcher2 = new RegularFilesSearcher("index.js");
+        int result2 = searcher2.searchFiles().size();
 
-        fileSearcher.setFileName("index.js");
-        int result3 = fileSearcher.searchFileByPattern().size();
+        FilesSearcher searcher3 = new PatternFilesSearcher("index.js");
+        int result3 = searcher3.searchFiles().size();
 
         Assert.assertEquals("Search for particular file mistake 1", result1, result2);
         Assert.assertEquals("Search for particular file mistake 2", result1, result3);
@@ -193,14 +197,14 @@ public class FileSearcherTest {
      */
     @Test
     public void test_10() {
-        FileSearcher fileSearcher = new FileSearcher("php");
-        int result1 = fileSearcher.searchFile().size();
+        FilesSearcher searcher1 = new SimpleFilesSearcher("php");
+        int result1 = searcher1.searchFiles().size();
 
-        fileSearcher.setFileName(".*php.*");
-        int result2 = fileSearcher.searchFileByRegular().size();
+        FilesSearcher searcher2 = new RegularFilesSearcher(".*php.*");
+        int result2 = searcher2.searchFiles().size();
 
-        fileSearcher.setFileName("*php*");
-        int result3 = fileSearcher.searchFileByPattern().size();
+        FilesSearcher searcher3 = new PatternFilesSearcher("*php*");
+        int result3 = searcher3.searchFiles().size();
 
         Assert.assertEquals("Search for files and folders associated with \"php\" mistake 1", result1, result2);
         Assert.assertEquals("Search for files and folders associated with \"php\" mistake 2", result1, result3);
@@ -212,14 +216,16 @@ public class FileSearcherTest {
      */
     @Test
     public void test_11() {
-        fileSearcher = new FileSearcher("");
-        int result1 = fileSearcher.searchFile().size();
+        FilesSearcher searcher1 = new SimpleFilesSearcher("");
+        int result1 = searcher1.searchFiles().size();
         Assert.assertEquals("Search by part for null file name mistake", getCountFiles(), result1);
 
-        int result2 = fileSearcher.searchFileByRegular().size();
+        FilesSearcher searcher2 = new RegularFilesSearcher("");
+        int result2 = searcher2.searchFiles().size();
         Assert.assertEquals("Search by regular expression for null file name mistake", 0, result2);
 
-        int result3 = fileSearcher.searchFileByPattern().size();
+        FilesSearcher searcher3 = new PatternFilesSearcher("");
+        int result3 = searcher3.searchFiles().size();
         Assert.assertEquals("Search by pattern for null file name mistake", 0, result3);
     }
 }
